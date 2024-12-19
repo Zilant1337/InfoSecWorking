@@ -102,24 +102,26 @@ class ChatWindow(QMainWindow):
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
         layout = QVBoxLayout(central_widget)
-        
-        # Область чата
-        self.chat_area = QTextEdit()
-        self.chat_area.setReadOnly(True)
-        layout.addWidget(self.chat_area)
-        
+
         # Поле ввода и кнопка отправки
         input_layout = QHBoxLayout()
         self.message_input = QTextEdit()
         self.message_input.setMaximumHeight(100)
         self.message_input.textChanged.connect(self.limit_text_length)  # Валидация на длину текста
         input_layout.addWidget(self.message_input)
-        
+
         send_button = QPushButton("Отправить")
         send_button.clicked.connect(self.send_message)
         input_layout.addWidget(send_button)
-        
+
         layout.addLayout(input_layout)
+
+        # Область чата
+        self.chat_area = QTextEdit()
+        self.chat_area.setReadOnly(True)
+        layout.addWidget(self.chat_area)
+        
+
         
         # Кнопки для генерации и отправки ключей
         rsa_layout = QHBoxLayout()

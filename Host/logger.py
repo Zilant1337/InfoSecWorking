@@ -44,9 +44,3 @@ class Logger:
         """Закрытие файла при удалении объекта."""
         if hasattr(self, 'log_file'):
             self.log_file.close()
-
-# Использование:
-# logger = Logger()
-# logger.info("Сервер запущен")
-# logger.error("Ошибка подключения")
-# logger.warning("Попытка несанкционированного доступа")

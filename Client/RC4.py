@@ -3,35 +3,6 @@ from logger import Logger
 
 logger = Logger()
 
-# class RC4:
-#     def __init__(self, key: str):
-#         logger.info(f"Инициализация RC4 с ключом: {key}")
-#         self.key = [ord(c) for c in str(key)]
-#         self.S = list(range(256))
-#         self._ksa()
-        
-#     def _ksa(self):
-#         """Key Scheduling Algorithm."""
-#         j = 0
-#         for i in range(256):
-#             j = (j + self.S[i] + self.key[i % len(self.key)]) % 256
-#             self.S[i], self.S[j] = self.S[j], self.S[i]
-            
-#     def encrypt(self, data: str) -> str:
-#         S = self.S.copy()  # Создаем копию состояния для каждой операции
-#         i = j = 0
-#         result = []
-        
-#         for byte in [ord(c) for c in data]:
-#             i = (i + 1) % 256
-#             j = (j + S[i]) % 256
-#             S[i], S[j] = S[j], S[i]
-#             k = S[(S[i] + S[j]) % 256]
-#             result.append(chr(byte ^ k))
-            
-#         encrypted = ''.join(result)
-#         return encrypted
-
 class RC4:
     """
     Реализация потокового шифра RC4.
