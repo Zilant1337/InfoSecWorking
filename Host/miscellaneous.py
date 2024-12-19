@@ -188,7 +188,6 @@ def mod_exp(base: int, exp: int, mod: int) -> int:
     # Пока показатель степени не станет равным 0
     while exp > 0:
         # Если текущий бит показателя равен 1
-        # (проверяем с помощью побитового И)
         if exp & 1:
             # Умножаем результат на текущую базу
             result = (result * base) % mod
@@ -199,12 +198,6 @@ def mod_exp(base: int, exp: int, mod: int) -> int:
         exp >>= 1
         
     return result
-
-# def is_sophie_germain_prime(p: int) -> bool:
-#     """Проверка является ли число простым числом Софи Жермен."""
-#     if not solovay_strassen_test(p):
-#         return False
-#     return solovay_strassen_test(2 * p + 1)
 
 def is_sophie_germain_prime(p: int) -> bool:
     """

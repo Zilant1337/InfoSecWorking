@@ -44,7 +44,7 @@ class MainWindow(QMainWindow):
         self.chat_window = None
         
         self.setWindowTitle("Хост")
-        self.setGeometry(100, 100, 400, 200)
+        self.setGeometry(100, 100, 200, 100)
         
         self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)
@@ -87,7 +87,6 @@ class ChatWindow(QMainWindow):
     
     def __init__(self, session_key=None, is_server: bool = True, socket=None, rc4=None):
         super().__init__()
-        # Если передан готовый RC4, используем его, иначе создаем новый
         self.rc4 = rc4 if rc4 else RC4(str(session_key))
         self.is_server = is_server
         self.socket = socket
@@ -112,7 +111,7 @@ class ChatWindow(QMainWindow):
         # Поле ввода и кнопка отправки
         input_layout = QHBoxLayout()
         self.message_input = QTextEdit()
-        self.message_input.setMaximumHeight(50)
+        self.message_input.setMaximumHeight(100)
         self.message_input.textChanged.connect(self.limit_text_length)  # Валидация на длину текста
         input_layout.addWidget(self.message_input)
         
@@ -269,7 +268,7 @@ class Host(QObject):
         self.client_socket, _ = self.socket.accept()
         self.handle_client()
 
-    # В классе ClientO (server.py)
+    # В классе Host (server.py)
     def handle_client(self):
         """Обработка получаемых сообщений."""
         try:
@@ -412,19 +411,18 @@ class Host(QObject):
         try:
             # 64-битное нечетное число a
             self.a = generate_odd_64bit()
+            logger.info(f"Сгенерировано число a: {self.a}")
 
             # Генератор группы
             self.g = generate_generator()
+            logger.info(f"Генератор g: {self.g}")
 
             # 512-битное простое число p
             self.p = generate_prime_512bit()
+            logger.info(f"Сгенерировано простое число p: {self.p}")
 
             # A = g^a mod p
             self.A = mod_exp(self.g, self.a, self.p)
-
-            logger.info(f"Сгенерировано число a: {self.a}")
-            logger.info(f"Генератор g: {self.g}")
-            logger.info(f"Сгенерировано простое число p: {self.p}")
             logger.info(f"Вычислено число A: {self.A}")
             
             # Установим таймаут

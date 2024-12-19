@@ -54,7 +54,7 @@ class MessageThread(QThread):
                                 _, e, n = decrypted.split("|")
                                 # Отправляем сигнал с полученными ключами
                                 self.keys_received.emit(int(e), int(n))
-                                logger.info("Получен открытый ключ ClientO: e=%s, n=%s" % (e, n))
+                                logger.info("Получен открытый ключ Host: e=%s, n=%s" % (e, n))
                             else:
                                 # Иначе это обычное сообщение - отправляем сигнал
                                 self.message_received.emit(message, decrypted)
@@ -140,11 +140,8 @@ class Client:
             # Получаем A, g, p от основного клиента
             self.A, self.g, self.p = map(int, data.split('|'))
             
-            logger.info(f"Получены данные от хоста:")
-            logger.info(f"A: {self.A}")
-            logger.info(f"g: {self.g}")
-            logger.info(f"p: {self.p}")
-            
+            logger.info(f"Получены данные от хоста: A: {self.A}, g: {self.g}, p: {self.p}")
+
             # Вычисляем B = g^b mod p
             self.B = mod_exp(self.g, self.b, self.p)
             logger.info(f"Вычислено B: {self.B}")
@@ -287,7 +284,7 @@ class ChatWindow(QMainWindow):
         # Поле ввода и кнопка отправки
         input_layout = QHBoxLayout()
         self.message_input = QTextEdit()
-        self.message_input.setMaximumHeight(50)
+        self.message_input.setMaximumHeight(100)
         self.message_input.textChanged.connect(self.limit_text_length)  # Валидация на длину строки
         input_layout.addWidget(self.message_input)
         
@@ -312,7 +309,7 @@ class ChatWindow(QMainWindow):
         
         # Кнопки для загрузки и подписи файла
         file_layout = QHBoxLayout()
-        load_file_button = QPushButton("Загрузить файл")
+        load_file_button = QPushButton("Загрузить текстовый файл")
         load_file_button.clicked.connect(self.load_file)
         file_layout.addWidget(load_file_button)
         
@@ -440,6 +437,12 @@ class ChatWindow(QMainWindow):
                         )
                         return  
                     self.file_path = file_path
+                    #Выводим текст из файла в поле ввода текста
+                    self.message_input.clear()
+                    with open(self.file_path, 'r') as file:
+                        file_data = file.read()
+                    self.message_input.append(file_data)
+
                     logger.info(f"Файл загружен: {file_path}")
                     self.update_sign_button_state()
             except Exception as e:
